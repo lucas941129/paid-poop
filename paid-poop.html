@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>帶薪拉屎計算機 💩💰</title>
+<style>
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0;background:#f4f5f7;}
+.container{max-width:900px;margin:0 auto;padding:16px;}
+h1{text-align:center;margin:16px 0;}
+.card{background:#fff;border-radius:8px;padding:16px;box-shadow:0 2px 6px rgba(0,0,0,0.08);margin-bottom:16px;}
+h2{margin:0 0 8px;font-size:18px;}
+label{display:block;font-size:14px;margin-bottom:4px;}
+input,button,select{font-family:inherit;font-size:14px;}
+input[type="number"],input[type="text"]{width:100%;box-sizing:border-box;padding:6px 8px;border:1px solid #ccc;border-radius:4px;}
+.small{font-size:12px;color:#666;}
+.row{display:flex;gap:8px;flex-wrap:wrap;}
+.col{flex:1;min-width:160px;}
+button{border:none;border-radius:4px;padding:8px 12px;cursor:pointer;}
+.btn-primary{background:#4caf50;color:#fff;}
+.btn-secondary{background:#2196f3;color:#fff;}
+.btn-danger{background:#f44336;color:#fff;}
+.btn-small{font-size:12px;padding:4px 8px;}
+.summary{font-size:15px;margin-top:8px;}
+.summary span{font-weight:bold;}
+.table-wrapper{overflow-x:auto;margin-top:8px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{border-bottom:1px solid #eee;padding:6px 8px;text-align:left;white-space:nowrap;}
+th{background:#fafafa;}
+.badge{display:inline-block;padding:2px 6px;border-radius:999px;font-size:11px;background:#e3f2fd;}
+.timer-display{font-size:20px;font-weight:bold;text-align:center;margin:8px 0;}
+.timer-running{color:#e91e63;}
+.notice{font-size:12px;color:#999;margin-top:4px;}
+@media(max-width:600px){
+  th:nth-child(4),td:nth-child(4){display:none;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>💩 帶薪拉屎計算機 💰</h1>
+
+<!-- 薪資設定 -->
+<div class="card">
+<h2>1. 設定你的薪水</h2>
+<p class="small">可以直接填「時薪」，或用「月薪 + 上班天數 + 每天工時」自動算。</p>
+<div class="row">
+<div class="col">
+<label for="hourly">時薪（NT$）</label>
+<input id="hourly" type="number" min="0" step="1" placeholder="例如：183">
+<div class="notice">如果你知道自己的時薪，填這個就好。</div>
+</div>
+<div class="col">
+<label for="monthly">月薪（NT$）</label>
+<input id="monthly" type="number" min="0" step="1" placeholder="例如：28000">
+</div>
+<div class="col">
+<label for="days">每月上班天數</label>
+<input id="days" type="number" min="1" step="1" placeholder="例如：22">
+</div>
+<div class="col">
+<label for="hoursPerDay">每天上班時數</label>
+<input id="hoursPerDay" type="number" min="1" step="0.5" placeholder="例如：8">
+</div>
+</div>
+<div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+<button id="calcHourly" class="btn-secondary">用月薪幫我算時薪</button>
+<span class="small" id="hourlyDisplay"></span>
+</div>
+</div>
+
+<!-- 拉屎紀錄 / 計時器 -->
+<div class="card">
+<h2>2. 記錄一次拉屎</h2>
+<div class="row">
+<div class="col">
+<label for="minutes">這次拉幾分鐘？</label>
+<input id="minutes" type="number" min="1" step="1" placeholder="例如：7">
+<div class="notice">如果你懶得算，下面有拉屎計時器可用。</div>
+</div>
+<div class="col">
+<label>或使用計時器量這一泡</label>
+<div class="timer-display" id="timer" data-sec="0">00:00</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start;">
+<button id="startTimer" class="btn-primary">開始計時</button>
+<button id="stopTimer" class="btn-secondary">停止並填入分鐘</button>
+<button id="resetTimer" class="btn-danger">重置</button>
+</div>
+</div>
+</div>
+<div style="margin-top:10px;display:flex;justify-content:flex-end;">
+<button id="addSession" class="btn-primary">加入這次拉屎紀錄</button>
+</div>
+<p class="notice">⚠ 計算結果只存在這個瀏覽器分頁，不會上傳任何地方（放心拉）。</p>
+</div>
+
+<!-- 統計結果 -->
+<div class="card">
+<h2>3. 今天帶薪拉屎統計</h2>
+<div class="summary">
+今天總共拉了 <span id="totalMinutes">0</span> 分鐘，  
+等於賺了 <span id="totalMoney">0</span> 元 💰
+</div>
+<p class="small" id="moneyDetail"></p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>分鐘</th>
+<th>這次賺</th>
+<th>備註</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody id="sessionBody"></tbody>
+</table>
+</div>
+<p class="small">小提醒：如果你老闆看到這個網頁，請說這是「健康排便紀錄系統」。</p>
+<div style="margin-top:8px;display:flex;justify-content:flex-end;">
+<button id="clearAll" class="btn-danger">清空今天紀錄</button>
+</div>
+</div>
+
+</div>
+
+<script>
+const hourlyInput=document.getElementById("hourly");
+const monthlyInput=document.getElementById("monthly");
+const daysInput=document.getElementById("days");
+const hoursPerDayInput=document.getElementById("hoursPerDay");
+const calcHourlyBtn=document.getElementById("calcHourly");
+const hourlyDisplay=document.getElementById("hourlyDisplay");
+
+const minutesInput=document.getElementById("minutes");
+const addSessionBtn=document.getElementById("addSession");
+const totalMinutesSpan=document.getElementById("totalMinutes");
+const totalMoneySpan=document.getElementById("totalMoney");
+const moneyDetail=document.getElementById("moneyDetail");
+const sessionBody=document.getElementById("sessionBody");
+const clearAllBtn=document.getElementById("clearAll");
+
+const timerDisplay=document.getElementById("timer");
+const startTimerBtn=document.getElementById("startTimer");
+const stopTimerBtn=document.getElementById("stopTimer");
+const resetTimerBtn=document.getElementById("resetTimer");
+
+let sessions=[];
+let timerInterval=null;
+
+function formatTime(sec){
+  const m=Math.floor(sec/60);
+  const s=sec%60;
+  return(String(m).padStart(2,"0")+":"+String(s).padStart(2,"0"));
+}
+
+function updateTimerDisplay(){
+  const sec=parseInt(timerDisplay.getAttribute("data-sec")||"0");
+  timerDisplay.textContent=formatTime(sec);
+}
+
+function getHourlyWage(){
+  const h=parseFloat(hourlyInput.value);
+  if(!isNaN(h)&&h>0)return h;
+  const m=parseFloat(monthlyInput.value);
+  const d=parseFloat(daysInput.value);
+  const hp=parseFloat(hoursPerDayInput.value);
+  if(isNaN(m)||isNaN(d)||isNaN(hp)||m<=0||d<=0||hp<=0)return null;
+  return m/(d*hp);
+}
+
+function renderSummary(){
+  let totalMin=0;
+  sessions.forEach(s=>{totalMin+=s.minutes;});
+  totalMinutesSpan.textContent=totalMin.toString();
+  const hourly=getHourlyWage();
+  if(!hourly){
+    totalMoneySpan.textContent="0";
+    moneyDetail.textContent="請先設定好時薪（或用月薪幫你算），才會顯示賺多少。";
+    return;
+  }
+  const totalHours=totalMin/60;
+  const totalMoney=totalHours*hourly;
+  totalMoneySpan.textContent=Math.round(totalMoney);
+  moneyDetail.textContent="以時薪約 NT$"+hourly.toFixed(2)+" 計算，今天拉了約 "+totalHours.toFixed(2)+" 小時的屎時間。";
+}
+
+function renderSessions(){
+  sessionBody.innerHTML="";
+  if(sessions.length===0){
+    const tr=document.createElement("tr");
+    tr.innerHTML='<td colspan="5" style="text-align:center;color:#777;">還沒有任何一泡，努力工作中（？）</td>';
+    sessionBody.appendChild(tr);
+    renderSummary();
+    return;
+  }
+  sessions.forEach((s,idx)=>{
+    const tr=document.createElement("tr");
+    const hourly=getHourlyWage();
+    let moneyText="—";
+    if(hourly){
+      const money=(s.minutes/60)*hourly;
+      moneyText="約 NT$"+money.toFixed(1);
+    }
+    tr.innerHTML=
+      "<td>"+(idx+1)+"</td>"+
+      "<td>"+s.minutes+" 分鐘</td>"+
+      "<td>"+moneyText+"</td>"+
+      '<td>'+(s.fromTimer?'<span class="badge">計時器</span>':"")+"</td>"+
+      '<td><button class="btn-danger btn-small" data-index="'+idx+'">刪除</button></td>';
+    sessionBody.appendChild(tr);
+  });
+  renderSummary();
+}
+
+calcHourlyBtn.addEventListener("click",function(){
+  const m=parseFloat(monthlyInput.value);
+  const d=parseFloat(daysInput.value);
+  const hp=parseFloat(hoursPerDayInput.value);
+  if(isNaN(m)||isNaN(d)||isNaN(hp)||m<=0||d<=0||hp<=0){
+    alert("請把月薪、上班天數、每天工時都填好再算。");
+    return;
+  }
+  const h=m/(d*hp);
+  hourlyInput.value=h.toFixed(2);
+  hourlyDisplay.textContent="估算時薪約 NT$"+h.toFixed(2);
+  renderSummary();
+});
+
+addSessionBtn.addEventListener("click",function(){
+  const minutes=parseInt(minutesInput.value,10);
+  if(isNaN(minutes)||minutes<=0){
+    alert("請填一個正常的分鐘數啦（至少 1 分鐘）。");
+    return;
+  }
+  sessions.push({minutes,fromTimer:false});
+  minutesInput.value="";
+  renderSessions();
+});
+
+sessionBody.addEventListener("click",function(e){
+  const target=e.target;
+  if(target.tagName==="BUTTON"){
+    const idx=parseInt(target.getAttribute("data-index"),10);
+    if(!isNaN(idx)){
+      if(confirm("確定要刪掉這次的帶薪拉屎紀錄嗎？")){
+        sessions.splice(idx,1);
+        renderSessions();
+      }
+    }
+  }
+});
+
+clearAllBtn.addEventListener("click",function(){
+  if(!confirm("要清空今天所有拉屎紀錄嗎？")){
+    return;
+  }
+  sessions=[];
+  renderSessions();
+});
+
+startTimerBtn.addEventListener("click",function(){
+  if(timerInterval!==null)return;
+  timerDisplay.classList.add("timer-running");
+  timerInterval=setInterval(function(){
+    let sec=parseInt(timerDisplay.getAttribute("data-sec")||"0");
+    sec++;
+    timerDisplay.setAttribute("data-sec",sec.toString());
+    updateTimerDisplay();
+  },1000);
+});
+
+stopTimerBtn.addEventListener("click",function(){
+  if(timerInterval===null)return;
+  clearInterval(timerInterval);
+  timerInterval=null;
+  timerDisplay.classList.remove("timer-running");
+  const sec=parseInt(timerDisplay.getAttribute("data-sec")||"0");
+  const min=Math.max(1,Math.round(sec/60));
+  minutesInput.value=min.toString();
+  alert("這泡大約 "+min+" 分鐘，已幫你填到欄位。按「加入這次拉屎紀錄」就會算錢。");
+});
+
+resetTimerBtn.addEventListener("click",function(){
+  if(timerInterval!==null){
+    clearInterval(timerInterval);
+    timerInterval=null;
+  }
+  timerDisplay.setAttribute("data-sec","0");
+  updateTimerDisplay();
+  timerDisplay.classList.remove("timer-running");
+});
+
+hourlyInput.addEventListener("input",renderSummary);
+[monthlyInput,daysInput,hoursPerDayInput].forEach(el=>{
+  el.addEventListener("input",function(){
+    hourlyDisplay.textContent="";
+    renderSummary();
+  });
+});
+
+(function init(){
+  updateTimerDisplay();
+  renderSessions();
+})();
+</script>
+</body>
+</html>
