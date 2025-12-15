@@ -2,42 +2,158 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>帶薪拉屎計算機 💩💰</title>
+<title>帶薪生理休息計算機 🧻💰</title>
 <style>
-body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0;background:#f4f5f7;}
-.container{max-width:900px;margin:0 auto;padding:16px;}
-h1{text-align:center;margin:16px 0;}
-.card{background:#fff;border-radius:8px;padding:16px;box-shadow:0 2px 6px rgba(0,0,0,0.08);margin-bottom:16px;}
-h2{margin:0 0 8px;font-size:18px;}
-label{display:block;font-size:14px;margin-bottom:4px;}
-input,button,select{font-family:inherit;font-size:14px;}
-input[type="number"],input[type="text"]{width:100%;box-sizing:border-box;padding:6px 8px;border:1px solid #ccc;border-radius:4px;}
-.small{font-size:12px;color:#666;}
-.row{display:flex;gap:8px;flex-wrap:wrap;}
-.col{flex:1;min-width:160px;}
-button{border:none;border-radius:4px;padding:8px 12px;cursor:pointer;}
-.btn-primary{background:#4caf50;color:#fff;}
-.btn-secondary{background:#2196f3;color:#fff;}
-.btn-danger{background:#f44336;color:#fff;}
-.btn-small{font-size:12px;padding:4px 8px;}
-.summary{font-size:15px;margin-top:8px;}
-.summary span{font-weight:bold;}
-.table-wrapper{overflow-x:auto;margin-top:8px;}
-table{width:100%;border-collapse:collapse;font-size:13px;}
-th,td{border-bottom:1px solid #eee;padding:6px 8px;text-align:left;white-space:nowrap;}
-th{background:#fafafa;}
-.badge{display:inline-block;padding:2px 6px;border-radius:999px;font-size:11px;background:#e3f2fd;}
-.timer-display{font-size:20px;font-weight:bold;text-align:center;margin:8px 0;}
-.timer-running{color:#e91e63;}
-.notice{font-size:12px;color:#999;margin-top:4px;}
+:root{
+  --bg:#0b0f14;
+  --card:#121826;
+  --card-border:#1f2937;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --line:#1f2937;
+  --green:#22c55e;
+  --blue:#3b82f6;
+  --red:#ef4444;
+}
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  margin:0;
+  background:linear-gradient(180deg,#070a10,#0b0f14);
+  color:var(--text);
+}
+.container{
+  max-width:900px;
+  margin:0 auto;
+  padding:16px;
+}
+h1{
+  text-align:center;
+  margin:16px 0;
+  font-weight:700;
+}
+.card{
+  background:var(--card);
+  border-radius:12px;
+  padding:16px;
+  border:1px solid var(--card-border);
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+  margin-bottom:16px;
+}
+h2{
+  margin:0 0 8px;
+  font-size:18px;
+}
+label{
+  display:block;
+  font-size:14px;
+  margin-bottom:4px;
+  color:var(--muted);
+}
+input,button{
+  font-family:inherit;
+  font-size:14px;
+}
+input[type="number"],input[type="text"]{
+  width:100%;
+  box-sizing:border-box;
+  padding:8px 10px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#020617;
+  color:var(--text);
+}
+input:focus{
+  outline:none;
+  border-color:#3b82f6;
+}
+.small{
+  font-size:12px;
+  color:var(--muted);
+}
+.notice{
+  font-size:12px;
+  color:#94a3b8;
+  margin-top:4px;
+}
+.row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.col{
+  flex:1;
+  min-width:160px;
+}
+button{
+  border:none;
+  border-radius:8px;
+  padding:8px 14px;
+  cursor:pointer;
+  color:#fff;
+}
+button:hover{
+  filter:brightness(1.05);
+}
+.btn-primary{background:var(--green);}
+.btn-secondary{background:var(--blue);}
+.btn-danger{background:var(--red);}
+.btn-small{
+  font-size:12px;
+  padding:4px 8px;
+}
+.summary{
+  font-size:15px;
+  margin-top:8px;
+}
+.summary span{
+  font-weight:bold;
+  color:#facc15;
+}
+.table-wrapper{
+  overflow-x:auto;
+  margin-top:8px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+th,td{
+  border-bottom:1px solid var(--line);
+  padding:8px;
+  text-align:left;
+  white-space:nowrap;
+}
+th{
+  background:#020617;
+  color:#c7d2fe;
+}
+.badge{
+  display:inline-block;
+  padding:2px 8px;
+  border-radius:999px;
+  font-size:11px;
+  background:#1e293b;
+  color:#93c5fd;
+}
+.timer-display{
+  font-size:22px;
+  font-weight:bold;
+  text-align:center;
+  margin:8px 0;
+}
+.timer-running{color:#f472b6;}
 @media(max-width:600px){
-  th:nth-child(4),td:nth-child(4){display:none;}
+  th:nth-child(5),
+  td:nth-child(5){
+    display:none;
+  }
 }
 </style>
 </head>
 <body>
 <div class="container">
-<h1>💩 帶薪拉屎計算機 💰</h1>
+<h1 id="pageTitle">🧻 帶薪生理休息計算機 💰</h1>
 
 <!-- 薪資設定 -->
 <div class="card">
@@ -68,62 +184,79 @@ th{background:#fafafa;}
 </div>
 </div>
 
-<!-- 拉屎紀錄 / 計時器 -->
+<!-- 記錄/計時器 -->
 <div class="card">
-<h2>2. 記錄一次拉屎</h2>
+<h2>2. 記錄一次必要離席</h2>
 <div class="row">
 <div class="col">
-<label for="minutes">這次拉幾分鐘？</label>
+<label for="minutes">這次離席幾分鐘？</label>
 <input id="minutes" type="number" min="1" step="1" placeholder="例如：7">
-<div class="notice">如果你懶得算，下面有拉屎計時器可用。</div>
+<div class="notice">如果你懶得算，下面有計時器可用。</div>
 </div>
 <div class="col">
-<label>或使用計時器量這一泡</label>
+<label for="note">備註（可選）</label>
+<input id="note" type="text" maxlength="40" placeholder="例如：排隊、肚子痛、滑手機...">
+<div class="notice">備註只存在本機，方便你回想為什麼那次比較久。</div>
+</div>
+</div>
+
+<div class="row" style="margin-top:10px;">
+<div class="col">
+<label>或使用計時器量這次離席</label>
 <div class="timer-display" id="timer" data-sec="0">00:00</div>
 <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start;">
 <button id="startTimer" class="btn-primary">開始計時</button>
-<button id="stopTimer" class="btn-secondary">停止並填入分鐘</button>
+<button id="stopTimer" class="btn-secondary">停止並加入紀錄</button>
 <button id="resetTimer" class="btn-danger">重置</button>
 </div>
+<p class="notice">停止後會自動加入紀錄（分鐘數會向上取整）。</p>
 </div>
-</div>
-<div style="margin-top:10px;display:flex;justify-content:flex-end;">
-<button id="addSession" class="btn-primary">加入這次拉屎紀錄</button>
-</div>
-<p class="notice">⚠ 計算結果只存在這個瀏覽器分頁，不會上傳任何地方（放心拉）。</p>
 </div>
 
-<!-- 統計結果 -->
+<div style="margin-top:10px;display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;">
+<button id="addSession" class="btn-primary">加入這次紀錄</button>
+</div>
+<p class="notice">⚠ 計算結果只存在你的瀏覽器（localStorage），不會上傳任何地方。</p>
+</div>
+
+<!-- 統計 -->
 <div class="card">
-<h2>3. 今天帶薪拉屎統計</h2>
+<h2>3. 今日統計</h2>
 <div class="summary">
-今天總共拉了 <span id="totalMinutes">0</span> 分鐘，  
-等於賺了 <span id="totalMoney">0</span> 元 💰
+今日總共離席 <span id="totalMinutes">0</span> 分鐘，等於 <span id="totalMoney">0</span> 元 💰
 </div>
 <p class="small" id="moneyDetail"></p>
+
 <div class="table-wrapper">
 <table>
 <thead>
 <tr>
 <th>#</th>
+<th>時間</th>
 <th>分鐘</th>
-<th>這次賺</th>
+<th>本次金額</th>
 <th>備註</th>
+<th>來源</th>
 <th>操作</th>
 </tr>
 </thead>
 <tbody id="sessionBody"></tbody>
 </table>
 </div>
-<p class="small">小提醒：如果你老闆看到這個網頁，請說這是「健康排便紀錄系統」。</p>
+
+<p class="small">對外說明建議稱為「必要生理休息紀錄系統」。</p>
+
 <div style="margin-top:8px;display:flex;justify-content:flex-end;">
-<button id="clearAll" class="btn-danger">清空今天紀錄</button>
+<button id="clearAll" class="btn-danger">清空今日紀錄</button>
 </div>
 </div>
 
 </div>
 
 <script>
+const LS_SETTINGS="ppc_settings_v1";
+const LS_SESSIONS="ppc_sessions_v1";
+
 const hourlyInput=document.getElementById("hourly");
 const monthlyInput=document.getElementById("monthly");
 const daysInput=document.getElementById("days");
@@ -132,7 +265,9 @@ const calcHourlyBtn=document.getElementById("calcHourly");
 const hourlyDisplay=document.getElementById("hourlyDisplay");
 
 const minutesInput=document.getElementById("minutes");
+const noteInput=document.getElementById("note");
 const addSessionBtn=document.getElementById("addSession");
+
 const totalMinutesSpan=document.getElementById("totalMinutes");
 const totalMoneySpan=document.getElementById("totalMoney");
 const moneyDetail=document.getElementById("moneyDetail");
@@ -147,6 +282,11 @@ const resetTimerBtn=document.getElementById("resetTimer");
 let sessions=[];
 let timerInterval=null;
 
+function nowHHMM(){
+  const d=new Date();
+  return d.toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit",hour12:false});
+}
+
 function formatTime(sec){
   const m=Math.floor(sec/60);
   const s=sec%60;
@@ -154,8 +294,12 @@ function formatTime(sec){
 }
 
 function updateTimerDisplay(){
-  const sec=parseInt(timerDisplay.getAttribute("data-sec")||"0");
+  const sec=parseInt(timerDisplay.getAttribute("data-sec")||"0",10);
   timerDisplay.textContent=formatTime(sec);
+}
+
+function escapeHtml(str){
+  return(String(str||"").replace(/</g,"&lt;").replace(/>/g,"&gt;"));
 }
 
 function getHourlyWage(){
@@ -168,31 +312,64 @@ function getHourlyWage(){
   return m/(d*hp);
 }
 
+function saveAll(){
+  const settings={
+    hourly:hourlyInput.value,
+    monthly:monthlyInput.value,
+    days:daysInput.value,
+    hoursPerDay:hoursPerDayInput.value
+  };
+  localStorage.setItem(LS_SETTINGS,JSON.stringify(settings));
+  localStorage.setItem(LS_SESSIONS,JSON.stringify(sessions));
+}
+
+function loadAll(){
+  try{
+    const s=JSON.parse(localStorage.getItem(LS_SETTINGS)||"null");
+    if(s){
+      hourlyInput.value=s.hourly||"";
+      monthlyInput.value=s.monthly||"";
+      daysInput.value=s.days||"";
+      hoursPerDayInput.value=s.hoursPerDay||"";
+    }
+  }catch(_){}
+  try{
+    const arr=JSON.parse(localStorage.getItem(LS_SESSIONS)||"[]");
+    if(Array.isArray(arr))sessions=arr;
+  }catch(_){
+    sessions=[];
+  }
+}
+
 function renderSummary(){
   let totalMin=0;
   sessions.forEach(s=>{totalMin+=s.minutes;});
-  totalMinutesSpan.textContent=totalMin.toString();
+  totalMinutesSpan.textContent=String(totalMin);
+
   const hourly=getHourlyWage();
   if(!hourly){
     totalMoneySpan.textContent="0";
-    moneyDetail.textContent="請先設定好時薪（或用月薪幫你算），才會顯示賺多少。";
+    moneyDetail.textContent="請先設定好時薪（或用月薪幫你算），才會顯示金額。";
     return;
   }
+
   const totalHours=totalMin/60;
   const totalMoney=totalHours*hourly;
-  totalMoneySpan.textContent=Math.round(totalMoney);
-  moneyDetail.textContent="以時薪約 NT$"+hourly.toFixed(2)+" 計算，今天拉了約 "+totalHours.toFixed(2)+" 小時的屎時間。";
+  totalMoneySpan.textContent=String(Math.round(totalMoney));
+  moneyDetail.textContent="以時薪約 NT$"+hourly.toFixed(2)+" 計算，今日累積約 "+totalHours.toFixed(2)+" 小時的必要離席時間。";
 }
 
 function renderSessions(){
   sessionBody.innerHTML="";
+
   if(sessions.length===0){
     const tr=document.createElement("tr");
-    tr.innerHTML='<td colspan="5" style="text-align:center;color:#777;">還沒有任何一泡，努力工作中（？）</td>';
+    tr.innerHTML='<td colspan="7" style="text-align:center;color:#777;">今天還沒有任何一筆紀錄。</td>';
     sessionBody.appendChild(tr);
     renderSummary();
     return;
   }
+
   sessions.forEach((s,idx)=>{
     const tr=document.createElement("tr");
     const hourly=getHourlyWage();
@@ -201,14 +378,22 @@ function renderSessions(){
       const money=(s.minutes/60)*hourly;
       moneyText="約 NT$"+money.toFixed(1);
     }
+
+    const note=escapeHtml(s.note||"");
+    const src=s.fromTimer?'<span class="badge">計時器</span>':"—";
+
     tr.innerHTML=
       "<td>"+(idx+1)+"</td>"+
+      "<td>"+(escapeHtml(s.time)||"—")+"</td>"+
       "<td>"+s.minutes+" 分鐘</td>"+
       "<td>"+moneyText+"</td>"+
-      '<td>'+(s.fromTimer?'<span class="badge">計時器</span>':"")+"</td>"+
+      "<td>"+(note?note:"—")+"</td>"+
+      "<td>"+src+"</td>"+
       '<td><button class="btn-danger btn-small" data-index="'+idx+'">刪除</button></td>';
+
     sessionBody.appendChild(tr);
   });
+
   renderSummary();
 }
 
@@ -224,17 +409,20 @@ calcHourlyBtn.addEventListener("click",function(){
   hourlyInput.value=h.toFixed(2);
   hourlyDisplay.textContent="估算時薪約 NT$"+h.toFixed(2);
   renderSummary();
+  saveAll();
 });
 
 addSessionBtn.addEventListener("click",function(){
   const minutes=parseInt(minutesInput.value,10);
   if(isNaN(minutes)||minutes<=0){
-    alert("請填一個正常的分鐘數啦（至少 1 分鐘）。");
+    alert("請填一個正常的分鐘數（至少 1 分鐘）。");
     return;
   }
-  sessions.push({minutes,fromTimer:false});
+  sessions.push({minutes:minutes,time:nowHHMM(),note:noteInput.value.trim(),fromTimer:false});
   minutesInput.value="";
+  noteInput.value="";
   renderSessions();
+  saveAll();
 });
 
 sessionBody.addEventListener("click",function(e){
@@ -242,29 +430,29 @@ sessionBody.addEventListener("click",function(e){
   if(target.tagName==="BUTTON"){
     const idx=parseInt(target.getAttribute("data-index"),10);
     if(!isNaN(idx)){
-      if(confirm("確定要刪掉這次的帶薪拉屎紀錄嗎？")){
+      if(confirm("確定要刪除這次紀錄嗎？")){
         sessions.splice(idx,1);
         renderSessions();
+        saveAll();
       }
     }
   }
 });
 
 clearAllBtn.addEventListener("click",function(){
-  if(!confirm("要清空今天所有拉屎紀錄嗎？")){
-    return;
-  }
+  if(!confirm("要清空今日所有紀錄嗎？"))return;
   sessions=[];
   renderSessions();
+  saveAll();
 });
 
 startTimerBtn.addEventListener("click",function(){
   if(timerInterval!==null)return;
   timerDisplay.classList.add("timer-running");
   timerInterval=setInterval(function(){
-    let sec=parseInt(timerDisplay.getAttribute("data-sec")||"0");
+    let sec=parseInt(timerDisplay.getAttribute("data-sec")||"0",10);
     sec++;
-    timerDisplay.setAttribute("data-sec",sec.toString());
+    timerDisplay.setAttribute("data-sec",String(sec));
     updateTimerDisplay();
   },1000);
 });
@@ -274,10 +462,17 @@ stopTimerBtn.addEventListener("click",function(){
   clearInterval(timerInterval);
   timerInterval=null;
   timerDisplay.classList.remove("timer-running");
-  const sec=parseInt(timerDisplay.getAttribute("data-sec")||"0");
-  const min=Math.max(1,Math.round(sec/60));
-  minutesInput.value=min.toString();
-  alert("這泡大約 "+min+" 分鐘，已幫你填到欄位。按「加入這次拉屎紀錄」就會算錢。");
+
+  const sec=parseInt(timerDisplay.getAttribute("data-sec")||"0",10);
+  const min=Math.max(1,Math.ceil(sec/60));
+  sessions.push({minutes:min,time:nowHHMM(),note:noteInput.value.trim(),fromTimer:true});
+
+  noteInput.value="";
+  timerDisplay.setAttribute("data-sec","0");
+  updateTimerDisplay();
+
+  renderSessions();
+  saveAll();
 });
 
 resetTimerBtn.addEventListener("click",function(){
@@ -290,18 +485,28 @@ resetTimerBtn.addEventListener("click",function(){
   timerDisplay.classList.remove("timer-running");
 });
 
-hourlyInput.addEventListener("input",renderSummary);
-[monthlyInput,daysInput,hoursPerDayInput].forEach(el=>{
+function attachAutoSave(el){
   el.addEventListener("input",function(){
     hourlyDisplay.textContent="";
     renderSummary();
+    saveAll();
   });
+}
+
+hourlyInput.addEventListener("input",function(){
+  renderSummary();
+  saveAll();
 });
 
+[monthlyInput,daysInput,hoursPerDayInput].forEach(attachAutoSave);
+
 (function init(){
+  loadAll();
   updateTimerDisplay();
   renderSessions();
+  renderSummary();
 })();
 </script>
 </body>
 </html>
+
